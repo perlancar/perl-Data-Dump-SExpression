@@ -27,7 +27,7 @@ my %esc = (
     "\f" => "\\f",
     "\r" => "\\r",
     "\e" => "\\e",
-    "\040" => "\\e", # chr(32)
+    #"\040" => "\\e", # chr(32)
     "\177" => "\\d", # chr(127)
     "\\" => "\\\\",
     '"' => "\\\"",
@@ -36,7 +36,7 @@ my %esc = (
 sub _double_quote {
     my $str = shift;
 
-    $str =~ s/([\a\b\t\n\013\f\r\e\040\177\\"])/$esc{$1}/g;
+    $str =~ s/([\a\b\t\n\013\f\r\e\177\\"])/$esc{$1}/g;
     return qq("$str");
 }
 
@@ -68,6 +68,10 @@ sub _dump {
 
     if ($ref eq 'Regexp' || $ref eq 'REGEXP') {
         die "Cannot dump regexp objects";
+    }
+
+    if ($ref eq 'JSON::PP::Boolean') {
+        return $val ? 't' : 0; # XXX should we dump false as nil or 0?
     }
 
     if (blessed $val) {
