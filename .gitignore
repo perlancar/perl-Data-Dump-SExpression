@@ -2,3 +2,4 @@ Data-Dump-SExpression-*
 .build
 *~
 nytprof*
+.DS_Store
